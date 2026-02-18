@@ -48,7 +48,7 @@ func (g *Group[T]) Do(ctx context.Context, key string, fn func(ctx context.Conte
 		} else {
 			// randomize initial backoff to avoid all goroutines retrying at once
 			//nolint:gosec // using math/rand pseudo-randomness is acceptable here
-			backoff = time.Millisecond + time.Duration(rand.Intn(1e7))*time.Nanosecond
+			backoff = time.Millisecond + time.Duration(rand.Intn(1e7))*time.Nanosecond // #nosec G404
 		}
 		time.Sleep(backoff)
 	}

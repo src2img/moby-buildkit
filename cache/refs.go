@@ -1516,6 +1516,7 @@ func (cr *cacheRecord) finalize(ctx context.Context) error {
 	cr.mountCache = nil
 
 	mutable.dead = true
+	// #nosec G118: using other context for background work
 	go func() {
 		cr.cm.mu.Lock()
 		defer cr.cm.mu.Unlock()

@@ -972,6 +972,7 @@ func (e *edge) execOp(ctx context.Context) (any, error) {
 
 	for i := range results {
 		if i != int(index) {
+			// #nosec G118: using other context for background work
 			go results[i].Release(context.TODO())
 		}
 	}

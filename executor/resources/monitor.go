@@ -262,6 +262,7 @@ func prepareCgroupControllers() error {
 	}
 	s := bufio.NewScanner(f)
 	for s.Scan() {
+		// #nosec G703: path is built of constants that do path traversal
 		if err := os.WriteFile(filepath.Join(defaultMountpoint, initGroup, cgroupProcsFile), s.Bytes(), 0); err != nil {
 			return err
 		}

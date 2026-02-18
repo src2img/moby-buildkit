@@ -630,6 +630,7 @@ func runcProcessHandle(ctx context.Context, killer procKiller) (*procHandle, con
 	// preserve the logger on the context used for the runc process handling
 	runcCtx = bklog.WithLogger(runcCtx, bklog.G(ctx))
 
+	// #nosec G118: using other context for background work
 	go func() {
 		// Wait for pid
 		select {

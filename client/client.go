@@ -304,7 +304,7 @@ func WithServerConfigSystem(serverName string) ClientOpt {
 }
 
 func loadCredentials(opts *withCredentials) (grpc.DialOption, error) {
-	cfg := &tls.Config{}
+	cfg := &tls.Config{MinVersion: tls.VersionTLS12}
 
 	if opts.caCertSystem {
 		cfg.RootCAs, _ = x509.SystemCertPool()

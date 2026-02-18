@@ -760,6 +760,7 @@ func serverCredentials(cfg config.TLSConfig) (*tls.Config, error) {
 		return nil, errors.Wrap(err, "could not load server key pair")
 	}
 	tlsConf := &tls.Config{
+		MinVersion:   tls.VersionTLS12,
 		Certificates: []tls.Certificate{certificate},
 		NextProtos:   []string{"h2"},
 	}
