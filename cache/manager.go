@@ -235,6 +235,7 @@ func (cm *cacheManager) GetByBlob(ctx context.Context, desc ocispecs.Descriptor,
 	snapshotID := chainID.String()
 	if link != nil {
 		snapshotID = link.getSnapshotID()
+		// #nosec G118: using other context for background work
 		go link.Release(context.TODO())
 	}
 

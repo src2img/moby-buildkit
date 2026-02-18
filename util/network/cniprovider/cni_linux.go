@@ -84,6 +84,7 @@ func readFileAt(dirfd int, filename string, buf []byte) (int64, error) {
 func withDetachedNetNSIfAny(ctx context.Context, fn func(context.Context) error) error {
 	if stateDir := os.Getenv("ROOTLESSKIT_STATE_DIR"); stateDir != "" {
 		detachedNetNS := filepath.Join(stateDir, "netns")
+		// #nosec G703: environment variable must be explicitly set by user
 		if _, err := os.Lstat(detachedNetNS); !errors.Is(err, os.ErrNotExist) {
 			return ns.WithNetNSPath(detachedNetNS, func(_ ns.NetNS) error {
 				ctx := context.WithValue(ctx, contextKeyDetachedNetNS, detachedNetNS)

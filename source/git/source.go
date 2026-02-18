@@ -507,6 +507,7 @@ func (gs *gitSourceHandler) mountKnownHosts() (string, func() error, error) {
 		return "", nil, err
 	}
 	cleanup := func() error {
+		// #nosec G703: temporary file that was just created
 		return os.Remove(knownHosts.Name())
 	}
 	_, err = knownHosts.Write([]byte(gs.src.KnownSSHHosts))
@@ -1313,6 +1314,7 @@ func (gs *gitSourceHandler) checkout(ctx context.Context, repo *gitRepo, g sessi
 			return nil, err
 		}
 		for _, n := range names {
+			// #nosec G703: path is well-build from the parts
 			if err := os.Rename(filepath.Join(cd, subdir, n), filepath.Join(checkoutDir, n)); err != nil {
 				return nil, err
 			}
@@ -1345,6 +1347,7 @@ func (gs *gitSourceHandler) checkout(ctx context.Context, repo *gitRepo, g sessi
 	if idmap := mount.IdentityMapping(); idmap != nil {
 		uid, gid := idmap.RootPair()
 		err := filepath.WalkDir(gitDir, func(p string, _ os.DirEntry, _ error) error {
+			// #nosec G122: too risky to change that here as downstream patch
 			return os.Lchown(p, uid, gid)
 		})
 		if err != nil {
@@ -1401,6 +1404,7 @@ func resetSnapshotMtimes(dir string, t time.Time) error {
 		if d.Type()&os.ModeSymlink != 0 {
 			return lchtimes(p, t)
 		}
+		// #nosec G122: too risky to change that here as downstream patch
 		return os.Chtimes(p, t, t)
 	})
 	if err != nil {
@@ -1437,6 +1441,7 @@ func resetCompatibility014FileModes(dir string) error {
 		if !mode.IsRegular() || mode&0o111 != 0 {
 			return nil
 		}
+		// #nosec G122: too risky to change that here as downstream patch
 		return os.Chmod(p, mode|0o222)
 	})
 }

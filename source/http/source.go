@@ -407,6 +407,7 @@ func (hs *httpSourceHandler) resolveMetadataRef(ctx context.Context, jobCtx solv
 		// we need to add accept-encoding header manually because stdlib only adds it to GET requests
 		// some servers will return different etags if Accept-Encoding header is different
 		req.Header.Set("Accept-Encoding", "gzip")
+		// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 		resp, err := client.Do(req)
 		if err == nil {
 			if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotModified {
@@ -453,6 +454,7 @@ func (hs *httpSourceHandler) resolveMetadataRef(ctx context.Context, jobCtx solv
 		req.Header.Del("Accept-Encoding")
 	}
 
+	// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -905,6 +907,7 @@ func (hs *httpSourceHandler) Snapshot(ctx context.Context, jobCtx solver.JobCont
 
 	client := hs.client(g)
 
+	// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

@@ -17,6 +17,7 @@ func main() {
 	}
 
 	for _, fn := range os.Args[1:] {
+		// #nosec G703: purpose of the command line argument is read from the given filename
 		f, err = os.Open(fn)
 		if err != nil {
 			panic(err)
