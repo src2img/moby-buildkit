@@ -14,7 +14,7 @@ func main() {
 	}
 
 	for _, fn := range os.Args[1:] {
-		f, err := os.Open(fn) //nolint:gosec // not using os.Root to support symlinks
+		f, err := os.Open(fn) //#nosec G703: not using os.Root to support symlinks
 		if err != nil {
 			panic(err)
 		}
