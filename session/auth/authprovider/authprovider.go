@@ -215,7 +215,7 @@ func (ap *authProvider) tlsConfig(host string) (*tls.Config, error) {
 	if !ok {
 		return nil, nil
 	}
-	tc := &tls.Config{}
+	tc := &tls.Config{MinVersion: tls.VersionTLS12}
 	if len(c.RootCAs) > 0 {
 		systemPool, err := x509.SystemCertPool()
 		if err != nil {
@@ -244,7 +244,7 @@ func (ap *authProvider) tlsConfig(host string) (*tls.Config, error) {
 		tc.Certificates = append(tc.Certificates, cert)
 	}
 	if c.Insecure {
-		tc.InsecureSkipVerify = true
+		tc.InsecureSkipVerify = true // #nosec G402 -- InsecureSkipVerify is intentional: caller has explicitly set c.Insecure=true.
 	}
 	return tc, nil
 }

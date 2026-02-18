@@ -89,7 +89,7 @@ func WithRetryIf[T any](ctx context.Context, logger func([]byte), f func(context
 			return v, err
 		}
 		// Keep the retry budget independent of jitter, including the first retry.
-		delay := backoff/2 + rand.N(backoff/2) //nolint:gosec // Jitter spreads load; it does not need cryptographic randomness.
+		delay := backoff/2 + rand.N(backoff/2) //#nosec G404 -- Jitter spreads load; it does not need cryptographic randomness.
 		if retryAfter, ok := stderrors.AsType[*RetryAfterError](err); ok {
 			if retryAfter.Delay > MaxRetryAfter {
 				return v, err

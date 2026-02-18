@@ -450,6 +450,7 @@ func (hs *httpSourceHandler) resolveMetadataRef(ctx context.Context, jobCtx solv
 		// some servers will return different etags if Accept-Encoding header is different
 		req.Header.Set("Accept-Encoding", "gzip")
 		// Best-effort: on any error we fall through to the GET below, which is retried.
+		// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 		resp, err := client.Do(req)
 		if err == nil {
 			if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotModified {
