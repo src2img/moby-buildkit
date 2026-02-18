@@ -659,8 +659,7 @@ func compareWithRetry(ctx context.Context, comparer diff.Comparer, lower, upper 
 }
 
 func waitForRetry(ctx context.Context, retry int) bool {
-	//nolint:gosec // Backoff jitter does not require cryptographic randomness.
-	timer := time.NewTimer(time.Millisecond * time.Duration(rand.IntN(retry)))
+	timer := time.NewTimer(time.Millisecond * time.Duration(rand.IntN(retry))) //#nosec G404 -- Backoff jitter does not require cryptographic randomness.
 	select {
 	case <-ctx.Done():
 		timer.Stop()

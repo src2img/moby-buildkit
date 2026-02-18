@@ -513,6 +513,7 @@ func (gs *gitSourceHandler) mountKnownHosts() (string, func() error, error) {
 		return "", nil, err
 	}
 	cleanup := func() error {
+		// #nosec G703: temporary file that was just created
 		return os.Remove(knownHosts.Name())
 	}
 	_, err = knownHosts.Write([]byte(gs.src.KnownSSHHosts))
@@ -1319,6 +1320,7 @@ func (gs *gitSourceHandler) checkout(ctx context.Context, repo *gitRepo, g sessi
 			return nil, err
 		}
 		for _, n := range names {
+			// #nosec G703: path is well-build from the parts
 			if err := os.Rename(filepath.Join(cd, subdir, n), filepath.Join(checkoutDir, n)); err != nil {
 				return nil, err
 			}
