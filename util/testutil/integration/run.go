@@ -197,6 +197,7 @@ func Run(t *testing.T, testCases []Test, opt ...TestOpt) {
 
 	list := List()
 	if os.Getenv("BUILDKIT_WORKER_RANDOM") == "1" && len(list) > 0 {
+		// #nosec G404 -- math/rand is fine in a test utility
 		rng := rand.New(rand.NewSource(time.Now().UnixNano())) //nolint:gosec // using math/rand is fine in a test utility
 		list = []Worker{list[rng.Intn(len(list))]}
 	}

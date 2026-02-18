@@ -340,6 +340,7 @@ func (hs *httpSourceHandler) resolveMetadata(ctx context.Context, jobCtx solver.
 		// we need to add accept-encoding header manually because stdlib only adds it to GET requests
 		// some servers will return different etags if Accept-Encoding header is different
 		req.Header.Set("Accept-Encoding", "gzip")
+		// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 		resp, err := client.Do(req)
 		if err == nil {
 			if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotModified {
@@ -383,6 +384,7 @@ func (hs *httpSourceHandler) resolveMetadata(ctx context.Context, jobCtx solver.
 		req.Header.Del("Accept-Encoding")
 	}
 
+	// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -513,6 +515,7 @@ func (hs *httpSourceHandler) save(ctx context.Context, resp *http.Response, s se
 	}
 	fp := filepath.Join(dir, getFileName(hs.src.URL, hs.src.Filename, resp))
 
+	// #nosec G703: customer-defined path in his container
 	f, err := os.OpenFile(fp, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.FileMode(perm))
 	if err != nil {
 		return nil, "", err
@@ -544,6 +547,7 @@ func (hs *httpSourceHandler) save(ctx context.Context, resp *http.Response, s se
 	}
 
 	if gid != 0 || uid != 0 {
+		// #nosec G703: customer-defined path in his container
 		if err := os.Chown(fp, uid, gid); err != nil {
 			return nil, "", err
 		}
@@ -651,6 +655,7 @@ func (hs *httpSourceHandler) Snapshot(ctx context.Context, jobCtx solver.JobCont
 
 	client := hs.client(g)
 
+	// #nosec G704: this takes the URL from the HTTP source which is intentionally provided by the user in the Dockerfile
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

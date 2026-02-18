@@ -173,7 +173,7 @@ func (ap *authProvider) tlsConfig(host string) (*tls.Config, error) {
 	if !ok {
 		return nil, nil
 	}
-	tc := &tls.Config{}
+	tc := &tls.Config{MinVersion: tls.VersionTLS12}
 	if len(c.RootCAs) > 0 {
 		systemPool, err := x509.SystemCertPool()
 		if err != nil {

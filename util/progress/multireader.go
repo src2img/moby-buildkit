@@ -100,6 +100,7 @@ func (mr *MultiReader) Reader(ctx context.Context) Reader {
 	}()
 
 	if !mr.initialized {
+		// #nosec G118: using other context for background work
 		go mr.handle()
 		mr.initialized = true
 	}

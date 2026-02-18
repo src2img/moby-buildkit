@@ -76,6 +76,7 @@ func (l *LeaseRef) Adopt(ctx context.Context) error {
 		l.Discard()
 		return nil
 	}
+	// #nosec G118: using other context for background work
 	go l.Discard()
 	return nil
 }

@@ -38,9 +38,11 @@ func EnsureUserAddressDir() error {
 	if xdgRuntimeDir != "" {
 		dirs := strings.Split(xdgRuntimeDir, ":")
 		dir := filepath.Join(dirs[0], "buildkit")
+		// #nosec G703: well defined environment variable is used here to build the path
 		if err := os.MkdirAll(dir, 0700); err != nil {
 			return err
 		}
+		// #nosec G703: well defined environment variable is used here to build the path
 		return os.Chmod(dir, 0700|os.ModeSticky)
 	}
 	return nil

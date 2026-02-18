@@ -130,6 +130,7 @@ func toDialer(paths []string, raw bool) (func(context.Context) (net.Conn, error)
 			continue
 		}
 
+		// #nosec G703: p is coming from paths from the configuration, these are intentionally user-provided
 		fi, err := os.Stat(p)
 		if err != nil {
 			return nil, errors.WithStack(err)
@@ -142,6 +143,7 @@ func toDialer(paths []string, raw bool) (func(context.Context) (net.Conn, error)
 			return nil, errors.Errorf("raw mode only supported with socket paths")
 		}
 
+		// #nosec G703: p is coming from paths from the configuration, these are intentionally user-provided
 		f, err := os.Open(p)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to open %s", p)

@@ -33,6 +33,7 @@ func (p *ProviderWithProgress) ReaderAt(ctx context.Context, desc ocispecs.Descr
 
 	ctx, cancel := context.WithCancelCause(ctx)
 	doneCh := make(chan struct{})
+	// #nosec G118: using other context for background work
 	go trackProgress(ctx, desc, p.Manager, doneCh)
 	return readerAtWithCancel{ReaderAt: ra, cancel: cancel, doneCh: doneCh, logger: bklog.G(ctx)}, nil
 }
@@ -67,6 +68,7 @@ func (f *FetcherWithProgress) Fetch(ctx context.Context, desc ocispecs.Descripto
 
 	ctx, cancel := context.WithCancelCause(ctx)
 	doneCh := make(chan struct{})
+	// #nosec G118: using other context for background work
 	go trackProgress(ctx, desc, f.Manager, doneCh)
 	return readerWithCancel{ReadCloser: rc, cancel: cancel, doneCh: doneCh, logger: bklog.G(ctx)}, nil
 }
