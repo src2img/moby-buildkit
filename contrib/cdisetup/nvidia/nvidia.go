@@ -207,6 +207,7 @@ func installPackages(ctx context.Context, osr *osrelease, dv string, pw progress
 			return errors.Wrapf(err, "failed to create request for NVIDIA GPG key")
 		}
 
+		// #nosec G704: this takes a well-defined URL
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			return errors.Wrapf(err, "failed to download NVIDIA GPG key")

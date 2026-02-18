@@ -56,7 +56,7 @@ func fillInsecureOpts(host string, c config.RegistryConfig, h docker.RegistryHos
 		h2.Client = &http.Client{
 			Transport: tracing.NewTransport(transport),
 		}
-		tc.InsecureSkipVerify = true
+		tc.InsecureSkipVerify = true // #nosec G402 -- InsecureSkipVerify is intentional: caller has explicitly set c.Insecure=true.
 		return &h2, nil
 	} else if isHTTP {
 		h2 := h
@@ -90,7 +90,7 @@ func loadTLSConfig(c config.RegistryConfig) (*tls.Config, error) {
 		}
 	}
 
-	tc := &tls.Config{}
+	tc := &tls.Config{MinVersion: tls.VersionTLS12}
 	if len(c.RootCAs) > 0 {
 		systemPool, err := x509.SystemCertPool()
 		if err != nil {
